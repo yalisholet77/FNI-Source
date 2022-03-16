@@ -28,10 +28,6 @@ using StringTools;
 
 class MainMenuState extends MusicBeatState
 {
-	/*public static var muteKeys:Array<FlxKey> = [FlxKey.ZERO];
-	public static var volumeDownKeys:Array<FlxKey> = [FlxKey.NUMPADMINUS, FlxKey.MINUS];
-	public static var volumeUpKeys:Array<FlxKey> = [FlxKey.NUMPADPLUS, FlxKey.PLUS];*/
-
 	public static var psychEngineVersion:String = '0.4.2'; //This is also used for Discord RPC
 	public static var curSelected:Int = 0;
 
@@ -48,91 +44,8 @@ class MainMenuState extends MusicBeatState
 	var leftArrow:FlxSprite;
 	var rightArrow:FlxSprite;
 
-	/*var mustUpdate:Bool = false;
-	public static var updateVersion:String = '';*/
-
 	override public function create():Void
 	{
-		/*#if (polymod && !html5)
-		if (sys.FileSystem.exists('mods/')) {
-			var folders:Array<String> = [];
-			for (file in sys.FileSystem.readDirectory('mods/')) {
-				var path = haxe.io.Path.join(['mods/', file]);
-				if (sys.FileSystem.isDirectory(path)) {
-					folders.push(file);
-				}
-			}
-			if(folders.length > 0) {
-				polymod.Polymod.init({modRoot: "mods", dirs: folders});
-			}
-		}
-		#end
-		
-		#if CHECK_FOR_UPDATES
-		if(!closedState) {
-			trace('checking for update');
-			var http = new haxe.Http("https://raw.githubusercontent.com/ShadowMario/FNF-PsychEngine/main/gitVersion.txt");
-			
-			http.onData = function (data:String)
-			{
-				updateVersion = data.split('\n')[0].trim();
-				var curVersion:String = MainMenuState.psychEngineVersion.trim();
-				trace('version online: ' + updateVersion + ', your version: ' + curVersion);
-				if(updateVersion != curVersion) {
-					trace('versions arent matching!');
-					mustUpdate = true;
-				}
-			}
-			
-			http.onError = function (error) {
-				trace('error: $error');
-			}
-			
-			http.request();
-		}
-		#end
-
-		FlxG.game.focusLostFramerate = 60;
-		FlxG.sound.muteKeys = muteKeys;
-		FlxG.sound.volumeDownKeys = volumeDownKeys;
-		FlxG.sound.volumeUpKeys = volumeUpKeys;
-
-		PlayerSettings.init();
-
-		// DEBUG BULLSHIT
-
-		super.create();
-
-		FlxG.save.bind('funkin', 'ninjamuffin99');
-		ClientPrefs.loadPrefs();
-
-		Highscore.load();
-
-		if (FlxG.save.data.weekCompleted != null)
-		{
-			StoryMenuState.weekCompleted = FlxG.save.data.weekCompleted;
-		}
-
-		FlxG.mouse.visible = false;
-		#if FREEPLAY
-		MusicBeatState.switchState(new FreeplayState());
-		#elseif CHARTING
-		MusicBeatState.switchState(new ChartingState());
-		#else
-		if(FlxG.save.data.flashing == null && !FlashingState.leftState) {
-			FlxTransitionableState.skipNextTransIn = true;
-			FlxTransitionableState.skipNextTransOut = true;
-			MusicBeatState.switchState(new FlashingState());
-		} else {
-			#if desktop
-			DiscordClient.initialize();
-			Application.current.onExit.add (function (exitCode) {
-				DiscordClient.shutdown();
-			});
-			#end
-		}
-		#end*/
-
 		#if desktop
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
@@ -197,22 +110,6 @@ class MainMenuState extends MusicBeatState
 
 		FlxG.camera.follow(camFollowPos, null, 1);
 
-		/*for (i in 0...optionShit.length) //OLD MENU CODE
-		{
-			var menuItem:FlxSprite = new FlxSprite(0, 520);
-			menuItem.frames = Paths.getSparrowAtlas('mainmenu/menu_' + optionShit[i]);
-			menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
-			menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
-			menuItem.animation.play('idle');
-			menuItem.ID = i;
-			menuItem.x += (1280 * i);
-			//menuItem.y += 520;
-			menuItems.add(menuItem);
-			menuItem.scrollFactor.set(1, 0);
-			menuItem.antialiasing = ClientPrefs.globalAntialiasing;
-			menuItem.updateHitbox();
-		}*/
-
 		leftArrow = new FlxSprite();
 		leftArrow.frames = Paths.getSparrowAtlas('mainmenu/leftArrow');
 		leftArrow.animation.addByPrefix('idle', "left idle");
@@ -262,6 +159,10 @@ class MainMenuState extends MusicBeatState
 		}
 		#end
 
+                #if android
+	        addVirtualPad(UP_DOWN, A_B);
+                #end
+
 		super.create();
 	}
 
@@ -301,16 +202,6 @@ class MainMenuState extends MusicBeatState
 				changeItem(1);
 			}
 
-			/*if (controls.UI_LEFT)
-				leftArrow.animation.play('press');
-			else
-				leftArrow.animation.play('idle');
-
-			if (controls.UI_RIGHT)
-				rightArrow.animation.play('press')
-			else
-				rightArrow.animation.play('idle');*/
-
 			if (controls.BACK)
 			{
 				selectedSomethin = true;
@@ -320,15 +211,7 @@ class MainMenuState extends MusicBeatState
 
 			if (controls.ACCEPT)
 			{
-				/*if (optionShit[curSelected] == 'troll')
-				{
-					//if (ClientPrefs.flashing)
-						//FlxFlicker.flicker(magenta, 1.1, 0.15, false);
-					FlxG.sound.play(Paths.sound('confirmMenuBell'));
-					CoolUtil.browserLoad('https://youtu.be/iaHr2dmUAfo');
-					//FlxG.camera.flash(0xFFe0e0e0, 1.6);
-				}
-				else */if (optionShit[curSelected] == 'discord')
+                                if (optionShit[curSelected] == 'discord')
 				{
 					//if (ClientPrefs.flashing)
 						//FlxFlicker.flicker(magenta, 1.1, 0.15, false);
