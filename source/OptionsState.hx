@@ -312,9 +312,9 @@ class NotesSubstate extends MusicBeatSubstate
 					spr.alpha = 0;
 				});
 				#if android
-				close();
-				#else
 				MusicBeatState.resetState();
+				#else
+				close();
                                 #end
 			}
 			changingNote = false;
@@ -509,9 +509,9 @@ class ControlsSubstate extends MusicBeatSubstate {
 					spr.alpha = 0;
 				});
 				#if android
-				close();
-				#else
 				MusicBeatState.resetState();
+				#else
+				close();
                                 #end
 				FlxG.sound.play(Paths.sound('cancelMenu'));
 			}
@@ -879,9 +879,9 @@ class PreferencesSubstate extends MusicBeatSubstate
 			}
 			descText.alpha = 0;
 			#if android
-			close();
-			#else
 			MusicBeatState.resetState();
+			#else
+			close();
                         #end
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 		}
