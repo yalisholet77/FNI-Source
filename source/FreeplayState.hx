@@ -89,7 +89,7 @@ class FreeplayState extends MusicBeatState
 		}
 		WeekData.setDirectoryFromWeek();
 
-		var initSonglist = CoolUtil.coolTextFile(Paths.txt('freeplaySonglist'));
+		var initSonglist = CoolUtil.coolTextFile(SUtil.getPath() + Paths.txt('freeplaySonglist'));
 		for (i in 0...initSonglist.length)
 		{
 			if(initSonglist[i] != null && initSonglist[i].length > 0) {
